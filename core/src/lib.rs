@@ -10,6 +10,7 @@
 
 extern crate chrono;
 extern crate enum_set;
+extern crate indexmap;
 extern crate ordered_float;
 extern crate uuid;
 extern crate serde;
@@ -42,6 +43,10 @@ pub use uuid::Uuid;
 pub use chrono::{
     DateTime,
     Timelike,       // For truncation.
+};
+
+use indexmap::{
+    IndexMap,
 };
 
 pub use edn::{
@@ -982,6 +987,32 @@ impl HasSchema for Schema {
     fn component_attributes(&self) -> &[Entid] {
         &self.component_attributes
     }
+}
+
+/// A pull expression expands a binding into a structure. The returned structure
+/// associates attributes named in the input or retrieved from the store with values.
+/// This association is a `StructuredMap`.
+///
+/// Note that 'attributes' in Datomic's case can mean:
+/// - Reversed attribute keywords (:artist/_country).
+/// - An alias using `:as` (:artist/name :as "Band name").
+///
+/// We entirely support the former, and partially support the latter -- you can alias
+/// using a different keyword only.
+pub struct StructuredMap(IndexMap<Rc<NamespacedKeyword>, StructuredValue>);
+
+/// The values stored in a `StructuredMap` can be:
+///
+/// * Vecs of structured values, for multi-valued component attributes or nested expressions.
+/// * Single structured values, for single-valued component attributes or nested expressions.
+/// * Single typed values, for simple attributes.
+///
+/// Datomic also supports structured _bindings_; at present Mentat does not, but this type
+/// would also serve that purpose.
+pub enum StructuredValue {
+    Scalar(TypedValue),
+    Vec(Vec<StructuredValue>),
+    Map(StructuredMap),
 }
 
 pub mod intern_set;
