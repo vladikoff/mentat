@@ -16,6 +16,10 @@ import java.util.UUID;
 
 public class Mentat extends RustObject {
 
+    static {
+        System.loadLibrary("mentat_ffi");
+    }
+
     public Mentat(String dbPath) {
         this.rawPointer = JNA.INSTANCE.store_open(dbPath);
     }
