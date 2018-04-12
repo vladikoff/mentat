@@ -132,7 +132,7 @@ fn test_real_world() {
                       .into_rel_result()
                       .expect("query succeeded");
     assert_eq!(results,
-               vec![vec![alice, now.clone()], vec![barbara, now.clone()]]);
+               vec![vec![alice, now.clone()], vec![barbara, now.clone()]].into());
 }
 
 #[test]
@@ -1035,7 +1035,7 @@ fn test_upgrade_with_functions() {
                        [?p :person/name ?name]]"#;
     let r = store.q_once(q, None).into_rel_result().unwrap();
     assert_eq!(vec![vec![TypedValue::typed_string("Sam"), TypedValue::Long(162)],
-                    vec![TypedValue::typed_string("Beth"), TypedValue::Long(172)]],
+                    vec![TypedValue::typed_string("Beth"), TypedValue::Long(172)]].into(),
                r);
 
     // Find foods that Upstream Color fans like.

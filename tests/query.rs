@@ -79,7 +79,7 @@ fn test_rel() {
 
     // Every row is a pair of a Ref and a Keyword.
     if let QueryResults::Rel(ref rel) = results {
-        for r in rel {
+        for r in rel.into_iter() {
             assert_eq!(r.len(), 2);
             assert!(r[0].matches_type(ValueType::Ref));
             assert!(r[1].matches_type(ValueType::Keyword));
@@ -88,7 +88,6 @@ fn test_rel() {
         panic!("Expected rel.");
     }
 
-    println!("{:?}", results);
     println!("Rel took {}µs", start.to(end).num_microseconds().unwrap());
 }
 
@@ -307,7 +306,7 @@ fn test_tx() {
         QueryResults::Rel(ref v) => {
             assert_eq!(*v, vec![
                 vec![TypedValue::Ref(t.tx_id),]
-            ]);
+            ].into());
         },
         _ => panic!("Expected query to work."),
     }
@@ -344,7 +343,7 @@ fn test_tx_as_input() {
         QueryResults::Rel(ref v) => {
             assert_eq!(*v, vec![
                 vec![TypedValue::Uuid(Uuid::from_str("cf62d552-6569-4d1b-b667-04703041dfc4").expect("Valid UUID")),]
-            ]);
+            ].into());
         },
         _ => panic!("Expected query to work."),
     }
@@ -449,7 +448,7 @@ fn test_fulltext() {
                 vec![TypedValue::Ref(v),
                      TypedValue::String("I've come to talk with you again".to_string().into()),
                 ]
-            ]);
+            ].into());
         },
         _ => panic!("Expected query to work."),
     }
@@ -833,7 +832,7 @@ fn test_monster_head_aggregates() {
                 vec!["Cyclops".into(),  TypedValue::Long(3)],
                 vec!["Medusa".into(),   TypedValue::Long(1)],
             ];
-            assert_eq!(vals, expected);
+            assert_eq!(vals, expected.into());
         },
         r => panic!("Unexpected result {:?}", r),
     };
@@ -896,7 +895,7 @@ fn test_basic_aggregates() {
                  .into();
     match r {
         QueryResults::Rel(vals) => {
-            assert_eq!(vals, vec![vec![TypedValue::Long(1)]]);
+            assert_eq!(vals, vec![vec![TypedValue::Long(1)]].into());
         },
         _ => panic!("Expected rel."),
     }
@@ -1012,7 +1011,7 @@ fn test_basic_aggregates() {
                 vec![TypedValue::Long(22), TypedValue::Long(1)],
                 vec![TypedValue::Long(28), TypedValue::Long(2)],
                 vec![TypedValue::Long(42), TypedValue::Long(1)],
-            ]);
+            ].into());
         },
         _ => panic!("Expected rel."),
     }
@@ -1182,8 +1181,8 @@ fn test_aggregate_the() {
     // that corresponds to the maximum visit date.
     //
     // 'Group' in this context translates to GROUP BY in the generated SQL.
-    assert_eq!(2, per_title.len());
-    assert_eq!(1, corresponding_title.len());
+    assert_eq!(2, per_title.row_count());
+    assert_eq!(1, corresponding_title.row_count());
 
     assert_eq!(corresponding_title,
                vec![vec![TypedValue::Instant(DateTime::<Utc>::from_str("2018-04-06T20:46:00.000Z").unwrap()),
