@@ -8,7 +8,7 @@ import Mentatlib
 
 protocol Observing {
     // define functions for store observation
-    func transactionDidOccur(key: String, reports: [TransactionChange])
+    func transactionDidOccur(key: String, reports: [TxChange])
 }
 
 protocol Observable {
@@ -42,7 +42,7 @@ class Mentat: RustObject {
         return Int64(store_entid_for_attribute(self.raw, attribute))
     }
 
-    func sync_now() -> Bool {
+    func sync() -> Bool {
         let err = store_sync(self.raw, "00000000-0000-0000-0000-000000000117", "http://mentat.dev.lcip.org/mentatsync/0.1")
         if let error = err.pointee.err {
             let str = String(cString: error)
@@ -183,6 +183,6 @@ private func transactionObserverCallback(key: UnsafePointer<CChar>, reports: Uns
 //        txReports.append(TxReport(raw: report))
 //    }
     DispatchQueue.global(qos: .background).async {
-        observer.transactionDidOccur(key: key, reports: [TransactionChange]())
+        observer.transactionDidOccur(key: key, reports: [TxChange]())
     }
 }

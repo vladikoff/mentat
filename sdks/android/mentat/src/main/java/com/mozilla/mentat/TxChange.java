@@ -18,11 +18,11 @@ import java.util.List;
  * Created by emilytoop on 01/03/2018.
  */
 
-public class NativeTxReport extends Structure implements Closeable {
-    public static class ByReference extends NativeTxReport implements Structure.ByReference {
+public class TxChange extends Structure implements Closeable {
+    public static class ByReference extends TxChange implements Structure.ByReference {
     }
 
-    public static class ByValue extends NativeTxReport implements Structure.ByValue {
+    public static class ByValue extends TxChange implements Structure.ByValue {
     }
 
     public int txid;
@@ -48,7 +48,7 @@ public class NativeTxReport extends Structure implements Closeable {
 
     @Override
     public void close() {
-        Log.i("NativeTxReport", "close");
+        Log.i("TxChange", "close");
         if (this.getPointer() != null) {
             JNA.INSTANCE.destroy(this.getPointer());
         }

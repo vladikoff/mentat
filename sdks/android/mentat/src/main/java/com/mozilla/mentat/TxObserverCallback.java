@@ -6,8 +6,7 @@
 package com.mozilla.mentat;
 
 import com.sun.jna.Callback;
-import com.sun.jna.Pointer;
 
-public interface NativeTxObserverCallback extends Callback {
-    void transactionObserverCalled(String key, NativeTxReportList.ByReference reports);
+public interface TxObserverCallback extends Callback {
+    void transactionObserverCalled(String key, TxChangeList.ByReference reports);
 }

@@ -7,14 +7,14 @@
 #include <stdint.h>
 #include <Foundation/NSObjCRuntime.h>
 
-struct TransactionChange {
+struct TxChange {
     int64_t txid;
     int64_t*_Nonnull* _Nonnull changes;
     uint64_t len;
 };
 
 struct TxChangeList {
-    struct TransactionChange*_Nonnull* _Nonnull reports;
+    struct TxChange*_Nonnull* _Nonnull reports;
     uint64_t len;
 };
 typedef struct TxChangeList TxChangeList;
@@ -76,7 +76,7 @@ struct Result*_Nonnull store_sync(struct Store*_Nonnull store, const char* _Nonn
 void store_register_observer(struct Store*_Nonnull  store, const char* _Nonnull key, const int64_t* _Nonnull attributes, const int64_t len, void (*_Nonnull callback_fn)(const char* _Nonnull key, const struct TxChangeList* _Nonnull reports));
 void store_unregister_observer(struct Store*_Nonnull  store, const char* _Nonnull key);
 int64_t store_entid_for_attribute(struct Store*_Nonnull store, const char*_Nonnull attr);
-int64_t changelist_entry_at(const struct TransactionChange* _Nonnull report, size_t index);
+int64_t changelist_entry_at(const struct TxChange* _Nonnull report, size_t index);
 
 // Query
 struct Query*_Nonnull store_query(struct Store*_Nonnull store, const char* _Nonnull query);
@@ -116,14 +116,6 @@ struct QueryRowsIterator* _Nonnull rows_iter(struct QueryResultRows* _Nonnull ro
 struct QueryResultRow* _Nullable rows_iter_next(struct QueryRowsIterator* _Nonnull iter);
 struct QueryRowIterator* _Nonnull values_iter(struct QueryResultRow* _Nonnull row);
 struct TypedValue* _Nullable values_iter_next(struct QueryRowIterator* _Nonnull iter);
-const int64_t* _Nullable values_iter_next_as_long(struct QueryRowIterator* _Nonnull iter);
-const int64_t* _Nullable values_iter_next_as_entid(struct QueryRowIterator* _Nonnull iter);
-const char* _Nullable values_iter_next_as_kw(struct QueryRowIterator* _Nonnull iter);
-const int32_t* _Nullable values_iter_next_as_boolean(struct QueryRowIterator* _Nonnull iter);
-const double* _Nullable values_iter_next_as_double(struct QueryRowIterator* _Nonnull iter);
-const int64_t* _Nullable values_iter_next_as_timestamp(struct QueryRowIterator* _Nonnull iter);
-const char* _Nullable values_iter_next_as_string(struct QueryRowIterator* _Nonnull iter);
-const char* _Nullable values_iter_next_as_uuid(struct QueryRowIterator* _Nonnull iter);
 
 struct TypedValue* _Nonnull value_at_index(struct QueryResultRow* _Nonnull row, const int32_t index);
 int64_t value_at_index_as_long(struct QueryResultRow* _Nonnull row, const int32_t index);
@@ -146,6 +138,6 @@ struct Result*_Nonnull store_set_string_for_attribute_on_entid(struct Store*_Non
 struct Result*_Nonnull store_set_uuid_for_attribute_on_entid(struct Store*_Nonnull store, const int64_t entid, const char* _Nonnull attribute, const char* _Nonnull value);
 
 // Transaction change lists
-const struct TransactionChange* _Nullable tx_change_list_entry_at(const struct TxChangeList* _Nonnull list, size_t index);
+const struct TxChange* _Nullable tx_change_list_entry_at(const struct TxChangeList* _Nonnull list, size_t index);
 
 #endif /* store_h */

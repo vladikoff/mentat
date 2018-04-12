@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class NativeResult extends Structure implements Closeable {
-    public static class ByReference extends NativeResult implements Structure.ByReference {
+public class RustResult extends Structure implements Closeable {
+    public static class ByReference extends RustResult implements Structure.ByReference {
     }
 
-    public static class ByValue extends NativeResult implements Structure.ByValue {
+    public static class ByValue extends RustResult implements Structure.ByValue {
     }
 
     public Pointer ok;

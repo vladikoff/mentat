@@ -18,11 +18,6 @@ public class Query extends RustObject {
         this.rawPointer = pointer;
     }
 
-    void bindInt(String varName, int value) {
-        this.validate();
-        JNA.INSTANCE.query_builder_bind_int(this.rawPointer, varName, value);
-    }
-
     void bindLong(String varName, long value) {
         this.validate();
         JNA.INSTANCE.query_builder_bind_long(this.rawPointer, varName, value);
@@ -70,7 +65,7 @@ public class Query extends RustObject {
 
     void executeMap(final TupleResultHandler handler) {
         this.validate();
-        NativeResult result = JNA.INSTANCE.query_builder_execute(rawPointer);
+        RustResult result = JNA.INSTANCE.query_builder_execute(rawPointer);
         rawPointer = null;
 
         if (result.isFailure()) {
@@ -86,7 +81,7 @@ public class Query extends RustObject {
 
     void execute(final RelResultHandler handler) {
         this.validate();
-        NativeResult result = JNA.INSTANCE.query_builder_execute(rawPointer);
+        RustResult result = JNA.INSTANCE.query_builder_execute(rawPointer);
         rawPointer = null;
 
         if (result.isFailure()) {
@@ -98,7 +93,7 @@ public class Query extends RustObject {
 
     void executeScalar(final ScalarResultHandler handler) {
         this.validate();
-        NativeResult result = JNA.INSTANCE.query_builder_execute_scalar(rawPointer);
+        RustResult result = JNA.INSTANCE.query_builder_execute_scalar(rawPointer);
         rawPointer = null;
 
         if (result.isFailure()) {
@@ -110,7 +105,7 @@ public class Query extends RustObject {
 
     void executeColl(final CollResultHandler handler) {
         this.validate();
-        NativeResult result = JNA.INSTANCE.query_builder_execute_coll(rawPointer);
+        RustResult result = JNA.INSTANCE.query_builder_execute_coll(rawPointer);
         rawPointer = null;
 
         if (result.isFailure()) {
@@ -123,7 +118,7 @@ public class Query extends RustObject {
     void executeCollMap(final ScalarResultHandler handler) {
         this.validate();
 
-        NativeResult result = JNA.INSTANCE.query_builder_execute_coll(rawPointer);
+        RustResult result = JNA.INSTANCE.query_builder_execute_coll(rawPointer);
         rawPointer = null;
 
         if (result.isFailure()) {
@@ -139,7 +134,7 @@ public class Query extends RustObject {
 
     void executeTuple(final TupleResultHandler handler) {
         this.validate();
-        NativeResult result = JNA.INSTANCE.query_builder_execute_tuple(rawPointer);
+        RustResult result = JNA.INSTANCE.query_builder_execute_tuple(rawPointer);
         rawPointer = null;
 
         if (result.isFailure()) {

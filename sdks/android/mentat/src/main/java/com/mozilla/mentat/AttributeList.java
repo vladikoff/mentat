@@ -14,11 +14,11 @@ import java.io.Closeable;
 import java.util.Arrays;
 import java.util.List;
 
-public class NativeAttributeList extends Structure implements Closeable {
-    public static class ByReference extends NativeAttributeList implements Structure.ByReference {
+public class AttributeList extends Structure implements Closeable {
+    public static class ByReference extends AttributeList implements Structure.ByReference {
     }
 
-    public static class ByValue extends NativeAttributeList implements Structure.ByValue {
+    public static class ByValue extends AttributeList implements Structure.ByValue {
     }
 
     public IntByReference attributes;
@@ -33,7 +33,7 @@ public class NativeAttributeList extends Structure implements Closeable {
 
     @Override
     public void close() {
-        Log.i("NativeAttributeList", "close");
+        Log.i("AttributeList", "close");
 
         if (this.getPointer() != null) {
             JNA.INSTANCE.destroy(this.getPointer());
